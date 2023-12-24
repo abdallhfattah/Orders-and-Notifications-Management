@@ -1,9 +1,18 @@
 package com.orderandnotification.orderandnotification.models;
 
+import java.util.List;
+
+import org.springframework.stereotype.Component;
+
+import com.orderandnotification.orderandnotification.models.Order.Order;
+import com.orderandnotification.orderandnotification.models.Order.SimpleOrder;
+
+@Component
 public class Customer {
 	// Account account;
 	String username;
 	String password;
+	List<Order> orders;
 
 	public String getUsername() {
 		return username;
@@ -20,5 +29,8 @@ public class Customer {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+
+	public void makeOrder(SimpleOrder simpleOrder) {
+		orders.add(simpleOrder);
+	}
 }

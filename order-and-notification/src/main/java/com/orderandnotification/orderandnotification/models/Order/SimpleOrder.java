@@ -1,35 +1,55 @@
 package com.orderandnotification.orderandnotification.models.Order;
 
-import com.orderandnotification.orderandnotification.models.Customer;
-import com.orderandnotification.orderandnotification.models.Prodcut;
-import com.orderandnotification.orderandnotification.models.Shippment.IShippingStrategy;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.orderandnotification.orderandnotification.models.Customer;
+import com.orderandnotification.orderandnotification.models.Product;
 
 public class SimpleOrder extends Order {
     private Customer customer;
     private double shippingFee;
-    private List<Prodcut> cart;
+    private List<Product> cart;
     private String location;
 
-    public SimpleOrder(IShippingStrategy shippingStrategy, Customer customer, String location) {
-        super(shippingStrategy);
+    public SimpleOrder(Customer customer) {
+        // super(shippingStrategy);
         this.customer = customer;
         this.shippingFee = 20;
         this.cart = new ArrayList<>();
-        this.location = location;
+        // this.location = location;
     }
-    public void addProduct(Prodcut prodcut) {
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    // public void setCustomer(Customer customer) {
+    // this.customer = customer;
+    // }
+
+    public double getShippingFee() {
+        return shippingFee;
+    }
+
+    // public void setShippingFee(double shippingFee) {
+    //     this.shippingFee = shippingFee;
+    // }
+
+    public List<Product> getCart() {
+        return cart;
+    }
+
+    public void setCart(List<Product> cart) {
+        this.cart = cart;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void addProduct(Product prodcut) {
         cart.add(prodcut);
-    }
-    public double calculateTotalPrice() {
-        double totalPrice = 0;
-        for (Prodcut prodcut : cart) {
-            totalPrice += prodcut.getPrice();
-        }
-        totalPrice += shippingFee;
-        return totalPrice;
     }
 
     public void setLocation(String location) {

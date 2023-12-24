@@ -1,14 +1,17 @@
 package com.orderandnotification.orderandnotification.models;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
+import org.springframework.stereotype.Repository;
+@Repository
 public class ProductsRepository {
 	private static ProductsRepository repository;
-	private List<Prodcut> prodcuts;
+	private Map<Product , Integer> products;
 
-	private ProductsRepository() {
-		prodcuts = new ArrayList<Prodcut>();
+	
+	public ProductsRepository() {
+		products = new HashMap<>();
 	}
 
 	public ProductsRepository getInstance() {
@@ -20,11 +23,11 @@ public class ProductsRepository {
 		return repository;
 	}
 
-	public List<Prodcut> getAvalibeProdcuts() {
-		return this.prodcuts;
+	public Map<Product , Integer> getAvalibeProduct() {
+		return this.products;
 	}
 
-	public void addProdcut(Prodcut prodcut) {
-		prodcuts.add(prodcut);
+	public void addProdcut(Product product) {
+		products.put(product, products.getOrDefault(product, 0) + 1);
 	}
 }

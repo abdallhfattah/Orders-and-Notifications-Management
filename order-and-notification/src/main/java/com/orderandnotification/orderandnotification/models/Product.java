@@ -1,12 +1,12 @@
 package com.orderandnotification.orderandnotification.models;
 
-public class Prodcut {
+public class Product {
 	private int serialNumber;
 	private String name;
 	private String vendor;
 	private String category;
 
-	public Prodcut(int serialNumber, String name, String vendor, String category, double price) {
+	public Product(int serialNumber, String name, String vendor, String category, double price) {
 		this.serialNumber = serialNumber;
 		this.name = name;
 		this.vendor = vendor;
