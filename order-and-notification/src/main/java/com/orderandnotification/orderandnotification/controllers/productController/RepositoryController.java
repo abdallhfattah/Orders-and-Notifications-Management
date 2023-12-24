@@ -15,7 +15,7 @@ import com.orderandnotification.orderandnotification.models.Product;
 @RestController
 @RequestMapping("/repo")
 public class RepositoryController {
-	private ProductRepositorybsl repo;
+	private final ProductRepositorybsl repo;
 
 	RepositoryController(ProductRepositorybsl repo) {
 		this.repo = repo;
