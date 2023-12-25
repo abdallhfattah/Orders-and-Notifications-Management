@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.orderandnotification.orderandnotification.models.Order.Order;
-import com.orderandnotification.orderandnotification.models.Order.SimpleOrder;
 
 @Component
 public class Customer {
