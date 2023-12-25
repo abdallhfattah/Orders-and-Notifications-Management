@@ -32,8 +32,7 @@ public class CustomerController {
 
     @PostMapping("/{customer}/add-simple-order")
     public String addSimpleOrder(@RequestBody SimpleOrder simpleOrder, @PathVariable("customer") String name) {
-        customerbsl.addSimpleOrder(simpleOrder , name);
-        return "Order Added";
+        return customerbsl.addSimpleOrder(simpleOrder , name);
     }
 
 }

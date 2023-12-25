@@ -1,11 +1,11 @@
 package com.orderandnotification.orderandnotification.models.Order;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.stereotype.Component;
 
 import com.orderandnotification.orderandnotification.models.Customer.Customer;
 import com.orderandnotification.orderandnotification.models.prodcut.Product;
-import org.springframework.stereotype.Component;
 
 @Component
 public class SimpleOrder extends Order {
