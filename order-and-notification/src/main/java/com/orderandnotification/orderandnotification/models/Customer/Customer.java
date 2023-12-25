@@ -13,8 +13,15 @@ public class Customer {
 	String username;
 	String password;
 	List<Order> orders;// = new ArrayList<>();
-	// List<String> hi;
-	String helloWorld;
+
+	public List<Order> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
+	}
+
 
 	// public Customer(String username, String password) {
 	// 	this.username = username;
@@ -37,7 +44,7 @@ public class Customer {
 		this.password = password;
 	}
 
-	public void makeOrder(SimpleOrder simpleOrder) {
-		orders.add(simpleOrder);
+	public void makeOrder(Order order) {
+		orders.add(order);
 	}
 }

@@ -16,7 +16,7 @@ public class SimpleOrderbsl {
 	private SimpleOrder simpleOrder;
 
 	SimpleOrderbsl(Customer customer) {
-		simpleOrder = new SimpleOrder(customer);
+		simpleOrder = new SimpleOrder();
 	}
 
 	@PostMapping("/addProdcut")

@@ -2,6 +2,7 @@ package com.orderandnotification.orderandnotification.models.Customer.controller
 
 import java.util.List;
 
+import com.orderandnotification.orderandnotification.models.Order.Order;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,6 +34,11 @@ public class CustomerController {
     @GetMapping("/get")
     public List<Customer> getCustomers(){
         return customersRepository.getCustomers();
+    }
+
+    @GetMapping("/{customer}/get-orders")
+    public List<Order> getOrders(@PathVariable("customer") String name) {
+        return customersRepository.getCustomer(name).getOrders();
     }
 
 }

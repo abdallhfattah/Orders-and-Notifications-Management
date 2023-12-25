@@ -5,19 +5,29 @@ import java.util.List;
 
 import com.orderandnotification.orderandnotification.models.Customer.Customer;
 import com.orderandnotification.orderandnotification.models.prodcut.Product;
+import org.springframework.stereotype.Component;
 
+@Component
 public class SimpleOrder extends Order {
     private Customer customer;
     private double shippingFee;
     private List<Product> cart;
     private String location;
 
-    public SimpleOrder(Customer customer) {
-        // super(shippingStrategy);
+//    public SimpleOrder(Customer customer) {
+//        // super(shippingStrategy);
+//        this.customer = customer;
+//        this.shippingFee = 20;
+//        this.cart = new ArrayList<>();
+//        // this.location = location;
+//    }
+
+    public void setCustomer(Customer customer) {
         this.customer = customer;
-        this.shippingFee = 20;
-        this.cart = new ArrayList<>();
-        // this.location = location;
+    }
+
+    public void setShippingFee(double shippingFee) {
+        this.shippingFee = shippingFee;
     }
 
     public Customer getCustomer() {
