@@ -9,7 +9,7 @@ import com.orderandnotification.orderandnotification.models.Customer.CustomersRe
 
 @Service
 public class CustomerRepositorybsl {
-    private final CustomersRepository customersRepository;
+    private CustomersRepository customersRepository;
 
     CustomerRepositorybsl(CustomersRepository customersRepository) {
         this.customersRepository = customersRepository;

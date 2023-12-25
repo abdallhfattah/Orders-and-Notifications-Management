@@ -13,8 +13,9 @@ public class Customerbsl {
 	private Customer customer;
 	private CustomerRepositorybsl customersRepository;
 
-	public Customerbsl(Customer customer) {
+	public Customerbsl(Customer customer, CustomerRepositorybsl cbsl) {
 		this.customer = customer;
+		customersRepository = cbsl;
 	}
 
 	public List<Order> getOrders(String name) {

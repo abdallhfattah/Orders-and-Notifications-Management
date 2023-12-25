@@ -17,23 +17,22 @@ import com.orderandnotification.orderandnotification.models.Order.SimpleOrder;
 public class CustomerController {
     private Customerbsl customerbsl;
 
+    public CustomerController(Customerbsl cbsl) {
+        customerbsl = cbsl;
+    }
+
     // private final CustomerRepositorybsl customersRepository;
 
     // CHANGE PASSWORD ->
     //
     @GetMapping("/{customer}/get-orders")
     public List<Order> getOrders(@PathVariable("customer") String name) {
-        // return customersRepository.getCustomer(name).getOrders();
         return customerbsl.getOrders(name);
     }
 
     @PostMapping("/{customer}/add-simple-order")
     public String addSimpleOrder(@RequestBody SimpleOrder simpleOrder, @PathVariable("customer") String name) {
-        // Customer customer = customerbsl.getCustomer(name);
         customerbsl.addSimpleOrder(simpleOrder , name);
-        // simpleOrder.setCustomer(customer);
-        // customer.makeOrder(simpleOrder);
-
         return "Order Added";
     }
 
