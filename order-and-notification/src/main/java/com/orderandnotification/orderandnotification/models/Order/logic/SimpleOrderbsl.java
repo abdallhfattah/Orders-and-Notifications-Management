@@ -1,4 +1,4 @@
-package com.orderandnotification.orderandnotification.logic;
+package com.orderandnotification.orderandnotification.models.Order.logic;
 
 import java.util.List;
 
@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.orderandnotification.orderandnotification.models.Customer.Customer;
-import com.orderandnotification.orderandnotification.models.Product;
 import com.orderandnotification.orderandnotification.models.Order.SimpleOrder;
+import com.orderandnotification.orderandnotification.models.prodcut.Product;
 
 @Service
 public class SimpleOrderbsl {

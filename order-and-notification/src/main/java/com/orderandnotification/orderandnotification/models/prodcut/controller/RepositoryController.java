@@ -1,4 +1,4 @@
-package com.orderandnotification.orderandnotification.controllers.productController;
+package com.orderandnotification.orderandnotification.models.prodcut.controller;
 
 import java.util.Map;
 
@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.orderandnotification.orderandnotification.logic.ProductRepositorybsl;
-import com.orderandnotification.orderandnotification.models.Product;
+import com.orderandnotification.orderandnotification.models.prodcut.Product;
+import com.orderandnotification.orderandnotification.models.prodcut.logic.ProductRepositorybsl;
 
 
 @RestController

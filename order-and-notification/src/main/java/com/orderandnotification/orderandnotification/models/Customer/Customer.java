@@ -12,7 +12,14 @@ public class Customer {
 	// Account account;
 	String username;
 	String password;
-	List<Order> orders;
+	List<Order> orders;// = new ArrayList<>();
+	// List<String> hi;
+	String helloWorld;
+
+	// public Customer(String username, String password) {
+	// 	this.username = username;
+	// 	this.password = password;
+	// }
 
 	public String getUsername() {
 		return username;

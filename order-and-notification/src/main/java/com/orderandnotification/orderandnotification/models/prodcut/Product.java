@@ -1,4 +1,4 @@
-package com.orderandnotification.orderandnotification.models;
+package com.orderandnotification.orderandnotification.models.prodcut;
 
 public class Product {
 	private int serialNumber;

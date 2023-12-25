@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.orderandnotification.orderandnotification.models.Customer.Customer;
-import com.orderandnotification.orderandnotification.models.Product;
+import com.orderandnotification.orderandnotification.models.prodcut.Product;
 
 public class SimpleOrder extends Order {
     private Customer customer;

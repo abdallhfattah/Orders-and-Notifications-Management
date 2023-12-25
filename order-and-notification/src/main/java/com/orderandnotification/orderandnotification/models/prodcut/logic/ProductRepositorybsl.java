@@ -1,12 +1,12 @@
-package com.orderandnotification.orderandnotification.logic;
+package com.orderandnotification.orderandnotification.models.prodcut.logic;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
-import com.orderandnotification.orderandnotification.models.Product;
-import com.orderandnotification.orderandnotification.models.ProductsRepository;
+import com.orderandnotification.orderandnotification.models.prodcut.Product;
+import com.orderandnotification.orderandnotification.models.prodcut.ProductsRepository;
 
 @Service
 public class ProductRepositorybsl {

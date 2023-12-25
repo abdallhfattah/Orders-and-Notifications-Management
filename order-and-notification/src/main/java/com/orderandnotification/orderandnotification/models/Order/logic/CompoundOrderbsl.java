@@ -1,4 +1,4 @@
-package com.orderandnotification.orderandnotification.logic;
+package com.orderandnotification.orderandnotification.models.Order.logic;
 
 import org.springframework.stereotype.Service;
 

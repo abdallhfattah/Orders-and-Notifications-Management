@@ -1,4 +1,4 @@
-package com.orderandnotification.orderandnotification.controllers.orderControllers;
+package com.orderandnotification.orderandnotification.models.Order.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 

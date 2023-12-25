@@ -1,4 +1,4 @@
-package com.orderandnotification.orderandnotification.models;
+package com.orderandnotification.orderandnotification.models.prodcut;
 
 import java.util.HashMap;
 import java.util.Map;
