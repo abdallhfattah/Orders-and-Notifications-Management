@@ -32,7 +32,7 @@ public class Customerbsl {
 			return "there is no such a user";
 		}
 
-		// this.simpleOrder.setCustomer(customer); // this line casues error
+		 this.simpleOrder.setCustomer(customer); // this line casues error
 		
 		/*  at com.fasterxml.jackson.databind.ser.impl.IndexedListSerializer.serialize(IndexedListSerializer.java:79) ~[jackson-databind-2.15.3.jar:2.15.3]
 			at com.fasterxml.jackson.databind.ser.impl.IndexedListSerializer.serialize(IndexedListSerializer.java:18) ~[jackson-databind-2.15.3.jar:2.15.3]
