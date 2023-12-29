@@ -1,6 +1,7 @@
 package com.orderandnotification.orderandnotification.models.Customer.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.orderandnotification.orderandnotification.models.Customer.logic.Customerbsl;
 import com.orderandnotification.orderandnotification.models.Order.Order;
-import com.orderandnotification.orderandnotification.models.Order.SimpleOrder;
 
 @RestController
 public class CustomerController {
@@ -23,21 +23,37 @@ public class CustomerController {
     // private final CustomerRepositorybsl customersRepository;
 
     // CHANGE PASSWORD ->
-    //
     @GetMapping("/{customer}/get-orders")
     public List<Order> getOrders(@PathVariable("customer") String name) {
         return customerbsl.getOrders(name);
     }
 
+    // public record productsM(Map<String, Integer> productsMap) {
+    //     public productsM() {
+    //         // System.out.println(productsMap);
+    //         // Initialize with an empty map
+    //         this(Map.of());
+    //     }
+    // }
+
+    public record ProductsM(Map<String, Integer> productsMap) {
+        
+    }
+
     @PostMapping("/{customer}/add-simple-order")
-    public String addSimpleOrder(@RequestBody SimpleOrder simpleOrder, @PathVariable("customer") String name) {
-        return customerbsl.addSimpleOrder(simpleOrder , name);
+    public String addSimpleOrder(@RequestBody ProductsM products,  @PathVariable("customer") String name) {
+        System.out.println(products.productsMap());
+        return customerbsl.addSimpleOrder(products.productsMap(), name);
+        // return customerbsl.addSimpleOrder(simpleOrder , name);
     }
 
     public record BalanceDTO(Double balance) {}
+    
     @PostMapping("/{customer}/add-balance")
     public String addBalance(@PathVariable("customer") String name, @RequestBody BalanceDTO balanceDTO) {
         return customerbsl.addBalance(balanceDTO.balance(), name);
     }
+
+
 
 }
