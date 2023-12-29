@@ -32,21 +32,25 @@ public class Customerbsl {
 			return "there is no such a user";
 		}
 
-		 this.simpleOrder.setCustomer(customer); // this line casues error
-		
-		/*  at com.fasterxml.jackson.databind.ser.impl.IndexedListSerializer.serialize(IndexedListSerializer.java:79) ~[jackson-databind-2.15.3.jar:2.15.3]
-			at com.fasterxml.jackson.databind.ser.impl.IndexedListSerializer.serialize(IndexedListSerializer.java:18) ~[jackson-databind-2.15.3.jar:2.15.3]
-			at com.fasterxml.jackson.databind.ser.BeanPropertyWriter.serializeAsField(BeanPropertyWriter.java:732) ~[jackson-databind-2.15.3.jar:2.15.3]
-			at com.fasterxml.jackson.databind.ser.std.BeanSerializerBase.serializeFields(BeanSerializerBase.java:772) ~[jackson-databind-2.15.3.jar:2.15.3]
-			at com.fasterxml.jackson.databind.ser.BeanSerializer.serialize(BeanSerializer.java:178) ~[jackson-databind-2.15.3.jar:2.15.3]
-			at com.fasterxml.jackson.databind.ser.BeanPropertyWriter.serializeAsField(BeanPropertyWriter.java:732) ~[jackson-databind-2.15.3.jar:2.15.3]
-			at com.fasterxml.jackson.databind.ser.std.BeanSerializerBase.serializeFields(BeanSerializerBase.java:772) ~[jackson-databind-2.15.3.jar:2.15.3]
-			at com.fasterxml.jackson.databind.ser.BeanSerializer.serialize(BeanSerializer.java:178) ~[jackson-databind-2.15.3.jar:2.15.3]
-			at com.fasterxml.jackson.databind.ser.impl.IndexedListSerializer.serializeContents(IndexedListSerializer.java:119) ~[jackson-databind-2.15.3.jar:2.15.3]
-		 */
+		 this.simpleOrder.setCustomer(customer);
+
 		customer.makeOrder(simpleOrder);
 
 		return "Order added Successfully";
 	}
 
+	public String addBalance(double balance, String name) {
+		this.customer = customersRepository.getCustomer(name);
+		customer.addBalance(balance);
+		return "Balance added!";
+	}
+
+	public String deductBalance(double balance, String name) {
+		this.customer = customersRepository.getCustomer(name);
+		if (balance > customer.getBalance()) {
+			return "Insufficient Balance";
+		}
+		customer.addBalance(balance);
+		return "Amount Deducted and Order is placed!";
+	}
 }

@@ -2,6 +2,7 @@ package com.orderandnotification.orderandnotification.models.Order;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.stereotype.Component;
 
 import com.orderandnotification.orderandnotification.models.Customer.Customer;
@@ -9,6 +10,7 @@ import com.orderandnotification.orderandnotification.models.prodcut.Product;
 
 @Component
 public class SimpleOrder extends Order {
+    @JsonIgnore
     private Customer customer;
     private double shippingFee;
     private List<Product> cart;

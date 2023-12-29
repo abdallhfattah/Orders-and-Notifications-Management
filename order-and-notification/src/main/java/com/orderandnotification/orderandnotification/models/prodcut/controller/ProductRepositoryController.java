@@ -14,10 +14,10 @@ import com.orderandnotification.orderandnotification.models.prodcut.logic.Produc
 
 @RestController
 @RequestMapping("/repo")
-public class RepositoryController {
+public class ProductRepositoryController {
 	private final ProductRepositorybsl repo;
 
-	RepositoryController(ProductRepositorybsl repo) {
+	ProductRepositoryController(ProductRepositorybsl repo) {
 		this.repo = repo;
 	}
 
@@ -31,8 +31,8 @@ public class RepositoryController {
 		return repo.getProducts();
 	}
 
-	@GetMapping("/getCategorys")
-	public Map<String,Integer> getCategorys() {
+	@GetMapping("/getCategories")
+	public Map<String, Integer> getCategories() {
 		return repo.getCategoryItems();
 	}
 

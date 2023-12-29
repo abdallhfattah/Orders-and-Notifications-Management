@@ -1,10 +1,16 @@
 package com.orderandnotification.orderandnotification.models.prodcut;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Product {
+//	@JsonIgnore
 	private int serialNumber;
+//	@JsonProperty("name")
 	private String name;
 	private String vendor;
 	private String category;
+	private double price;
 
 	public Product(int serialNumber, String name, String vendor, String category, double price) {
 		this.serialNumber = serialNumber;
@@ -22,7 +28,6 @@ public class Product {
 		this.category = category;
 	}
 
-	private double price;
 
 	public int getSerialNumber() {
 		return serialNumber;

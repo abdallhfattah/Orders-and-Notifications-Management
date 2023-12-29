@@ -8,10 +8,26 @@ import com.orderandnotification.orderandnotification.models.Order.Order;
 
 @Component
 public class Customer {
-	// Account account;
 	String username;
 	String password;
+	double balance = 0.0;
 	List<Order> orders;// = new ArrayList<>();
+
+	public double getBalance() {
+		return balance;
+	}
+
+	public void setBalance(double balance) {
+		this.balance = balance;
+	}
+
+	public void addBalance(double balance) {
+		this.balance += balance;
+	}
+
+	public void deductBalance(double balance) {
+		this.balance -= balance;
+	}
 
 	public List<Order> getOrders() {
 		return orders;
@@ -20,12 +36,6 @@ public class Customer {
 	public void setOrders(List<Order> orders) {
 		this.orders = orders;
 	}
-
-
-	// public Customer(String username, String password) {
-	// 	this.username = username;
-	// 	this.password = password;
-	// }
 
 	public String getUsername() {
 		return username;
