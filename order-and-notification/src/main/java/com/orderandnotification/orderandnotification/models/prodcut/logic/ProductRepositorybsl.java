@@ -42,8 +42,7 @@ public class ProductRepositorybsl {
 
 	}
 
-	public double verifyOrders(Map<Product,Integer> customerOrder , Map<String, Integer> products){
-		double totalCost = 0.0;
+	public String verifyOrders(Map<Product,Integer> customerOrder , Map<String, Integer> products , double totalCost){
 		for (Map.Entry<String, Integer> product : products.entrySet()) {
 
 			boolean productFound = false;
@@ -54,8 +53,7 @@ public class ProductRepositorybsl {
 					productFound = true;
 					// insufficient category number
 					if (entry.getValue() < product.getValue()) {
-						return -2;
-//						return "We have only " + entry.getValue() + " from this product " + product.getKey();
+						return "We have only " + entry.getValue() + " from this product " + product.getKey();
 					}
 					totalCost += (product.getValue() * entry.getKey().getPrice());
 					// add
@@ -65,10 +63,10 @@ public class ProductRepositorybsl {
 			}
 
 			if(!productFound){
-				return -1;
+				return "This " + product.getKey()  + " was not found , Order is cancelled";
 			}
 		}
-		return totalCost;
+		return "successfully done";
 	}
 
 	public Product getProduct(int serial) {
