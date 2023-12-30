@@ -5,14 +5,24 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.orderandnotification.orderandnotification.models.Order.Order;
+import com.orderandnotification.orderandnotification.models.Order.SimpleOrder;
 
 @Component
 public class Customer {
 	String username;
 	String password;
 	double balance = 0.0;
-	List<Order> orders;
+	List<Order> orders;	
 	String location;
+	Order currentOrder;
+
+	public Order getCurrentOrder() {
+		return currentOrder;
+	}
+
+	public void setCurrentOrder(Order currentOrder) {
+		this.currentOrder = currentOrder;
+	}
 
 	public String getLocation() {
 		return location;
@@ -64,5 +74,10 @@ public class Customer {
 
 	public void makeOrder(Order order) {
 		orders.add(order);
+		currentOrder = null;
+	}
+
+	public void applyShippingFee(SimpleOrder order){
+		balance -= order.getShippingFee();
 	}
 }

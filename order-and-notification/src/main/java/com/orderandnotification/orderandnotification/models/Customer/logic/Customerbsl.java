@@ -9,15 +9,19 @@ import org.springframework.stereotype.Service;
 import com.orderandnotification.orderandnotification.models.Customer.Customer;
 import com.orderandnotification.orderandnotification.models.Order.Order;
 import com.orderandnotification.orderandnotification.models.Order.SimpleOrder;
+import com.orderandnotification.orderandnotification.models.Order.logic.SimpleOrderbsl;
 import com.orderandnotification.orderandnotification.models.prodcut.Product;
 import com.orderandnotification.orderandnotification.models.prodcut.logic.ProductRepositorybsl;
 
 @Service
 public class Customerbsl {
+
 	private Customer customer;
 	private CustomerRepositorybsl customersRepository;
 	private SimpleOrder simpleOrder;
 	private ProductRepositorybsl ProductsRepositorybsl;
+	private SimpleOrderbsl simpleOrderbsl;
+	private Map<Product, Integer> customerOrder;
 
 	public Customerbsl(Customer customer, CustomerRepositorybsl cbsl, ProductRepositorybsl ProductsRepositorybsl) {
 		this.customer = customer;
@@ -31,7 +35,6 @@ public class Customerbsl {
 	}
 
 	public String addSimpleOrder(Map<String, Integer> products, String name) {
-		this.simpleOrder = new SimpleOrder();
 
 		this.customer = customersRepository.getCustomer(name);
 
@@ -39,49 +42,81 @@ public class Customerbsl {
 			return "there is no such a user";
 		}
 
-		Map<Product, Integer> customerOrder = new HashMap<>();
+		this.customerOrder = new HashMap<>();
 
-		String erros = ProductsRepositorybsl.verifyOrders(customerOrder, products);
+		simpleOrderbsl = new SimpleOrderbsl(customer);
 
-		if (!erros.equals("successfully done")) {
+		if (simpleOrder == null) {
+			this.simpleOrder = new SimpleOrder();
+		}
+
+		String erros = simpleOrderbsl.process(simpleOrder, ProductsRepositorybsl, customerOrder, products, customer);
+
+		if (!erros.equals("order added successfully")) {
 			return erros;
 		}
 
-		this.simpleOrder.setCustomer(customer);
+		this.customer.setCurrentOrder(simpleOrder);
 
-		for (Map.Entry<Product, Integer> producEntry : customerOrder.entrySet()) {
-			this.simpleOrder.addProduct(producEntry.getKey() , producEntry.getValue());
-		}
-		this.customer.makeOrder(simpleOrder);
-
-		System.out.println(simpleOrder.getCart());
 		return "order on cart";
 	}
 
-	// public String makeOrder(){
+	public String placeOrder(String location) {
 
-	// double TotalCost = ProductsRepositorybsl.GetOrderCost(products);
+		if (customerOrder != null) {
+			double TotalCost = ProductsRepositorybsl.GetOrderCost(simpleOrder);
 
-	// System.out.println("TotalCost " + TotalCost);
-	// if (customer.getBalance() >= TotalCost && customerOrder != null) {
-	// // removing products
-	// ProductsRepositorybsl.removeProducts(customerOrder);
+			if (customer.getBalance() >= TotalCost && customerOrder != null) {
 
-	// // this.simpleOrder.setCustomer(customer);
-	// this.simpleOrder.setCart(null);
-	// customer.deductBalance(TotalCost);
+				// removing products
+				ProductsRepositorybsl.removeProducts(customerOrder);
 
-	// customer.makeOrder(simpleOrder);
-	// return "Order added Successfully";
-	// } else {
-	// return "Insufficient balance";
-	// }
-	// }
+				// setting a customer for this specific order
+				this.simpleOrder.setCustomer(customer);
+
+				// setting location to the simple order
+				this.simpleOrder.setLocation(location);
+
+				// deductBalance
+				this.customer.deductBalance(TotalCost);
+
+				// make the order
+				SimpleOrder copy = new SimpleOrder();
+				copy.setCustomer(simpleOrder.getCustomer());
+				copy.setCustomerCart(simpleOrder.getCustomerCart());
+				copy.setLocation(simpleOrder.getLocation());
+				copy.setCart(simpleOrder.getCart());
+				copy.setShippingFee(simpleOrder.getShippingFee());
+				this.customer.makeOrder(copy);
+
+				return "Order added Successfully";
+			} else {
+				return "Insufficient balance";
+			}
+		}
+		return "add products to your cart";
+	}
+
+	public String shipOrder() {
+		if (simpleOrder != null) {
+
+			this.customer.applyShippingFee(simpleOrder);
+
+			// wiping the cart for shipment
+			simpleOrder.wipeCart();
+
+			return "order is being shiped";
+		}
+
+		return "there is not order";
+	}
 
 	public String addBalance(double balance, String name) {
+
 		this.customer = customersRepository.getCustomer(name);
 		customer.addBalance(balance);
 		return "Balance added!";
+
 	}
 
 	public String deductBalance(double balance, String name) {

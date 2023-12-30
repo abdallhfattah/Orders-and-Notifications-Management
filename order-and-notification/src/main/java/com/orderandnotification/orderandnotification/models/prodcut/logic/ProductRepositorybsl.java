@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import com.orderandnotification.orderandnotification.models.Order.SimpleOrder;
 import com.orderandnotification.orderandnotification.models.prodcut.Product;
 import com.orderandnotification.orderandnotification.models.prodcut.ProductsRepository;
 
@@ -29,6 +30,7 @@ public class ProductRepositorybsl {
 
 	public Map<String, Integer> getCategoryItems() {
 		Map<String, Integer> categories = new HashMap<>();
+
 		for (Map.Entry<Product, Integer> entry : repository.getAvalibeProduct().entrySet()) {
 			categories.put(entry.getKey().getCategory(),
 					categories.getOrDefault(entry.getKey().getCategory(), 0) + entry.getValue());
@@ -36,9 +38,10 @@ public class ProductRepositorybsl {
 
 		return categories;
 	}
-	public List<Object> returnProducts(){
+
+	public List<Object> returnProducts() {
 		List<Object> products = new ArrayList<>();
-		for(Map.Entry<Product, Integer> product : getProducts().entrySet()){
+		for (Map.Entry<Product, Integer> product : getProducts().entrySet()) {
 			products.add(product.getKey());
 		}
 		products.add(getCategoryItems());
@@ -78,17 +81,13 @@ public class ProductRepositorybsl {
 		return "successfully done";
 	}
 
-	public double GetOrderCost(Map<String, Integer> products) {
+	public double GetOrderCost(SimpleOrder simpleOrder) {
 		double TotalCost = 0.0;
-		for (Map.Entry<String, Integer> product : products.entrySet()) {
-			for (Map.Entry<Product, Integer> entry : getProducts().entrySet()) {
 
-				if (product.getKey().equals(entry.getKey().getName())) {
-					TotalCost += (product.getValue() * entry.getKey().getPrice());
-				}
-
-			}
+		for (Map.Entry<Product, Integer> product : simpleOrder.getCart().entrySet()) {
+			TotalCost += (product.getValue() * product.getKey().getPrice());
 		}
+
 		return TotalCost;
 	}
 

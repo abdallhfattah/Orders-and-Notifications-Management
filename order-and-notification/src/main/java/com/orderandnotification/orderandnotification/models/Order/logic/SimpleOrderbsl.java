@@ -1,32 +1,40 @@
 package com.orderandnotification.orderandnotification.models.Order.logic;
 
+import java.util.Map;
+
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import com.orderandnotification.orderandnotification.models.Customer.Customer;
 import com.orderandnotification.orderandnotification.models.Order.SimpleOrder;
+import com.orderandnotification.orderandnotification.models.prodcut.Product;
+import com.orderandnotification.orderandnotification.models.prodcut.logic.ProductRepositorybsl;
 
 @Service
 public class SimpleOrderbsl {
 	private SimpleOrder simpleOrder;
 
-	SimpleOrderbsl(Customer customer) {
+	public SimpleOrderbsl(Customer customer) {
 		simpleOrder = new SimpleOrder();
+		if (simpleOrder == null) {
+			simpleOrder = new SimpleOrder();
+			System.out.println("=======================================================\n");
+		}
 	}
 
-	// @PostMapping("/addProdcut")
-	// public void addProdcut(Product prodcut) {
-	// 	simpleOrder.addProduct(prodcut);
-	// }
+	public String process(SimpleOrder simpleOrder, ProductRepositorybsl ProductsRepositorybsl,
+			Map<Product, Integer> customerOrder,
+			Map<String, Integer> products,
+			Customer customer) {
 
-	// @GetMapping("/getProdcuts")
-	// public List<Product> seeCart() {
-	// 	return simpleOrder.getCart();
-	// }
+		String erros = ProductsRepositorybsl.verifyOrders(customerOrder, products);
+		if (!erros.equals("successfully done")) {
+			return erros;
+		}
 
-	@PostMapping("/setlocation/{location}")
-	public void setLocation(@PathVariable("location") String location){
-		simpleOrder.setLocation(location);
+		this.simpleOrder.setCustomer(customer);
+
+		simpleOrder.addProducts(customerOrder);
+		return "order added successfully";
 	}
+
 }
