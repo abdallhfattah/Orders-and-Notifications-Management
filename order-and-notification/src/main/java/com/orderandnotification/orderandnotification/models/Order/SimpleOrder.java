@@ -13,22 +13,20 @@ import com.orderandnotification.orderandnotification.models.prodcut.Product;
 public class SimpleOrder extends Order {
     @JsonIgnore
     private Customer customer;
-    private double shippingFee;
+    private double shippingFee = 20;
+    @JsonIgnore
     private Map<Product, Integer> cart;
+    private Map<String, Integer> customerCart;
     private String location;
 
-    public SimpleOrder() {
-
+    public Map<String, Integer> getCustomerCart() {
+        return customerCart;
     }
 
-    public SimpleOrder(Customer customer) {
-        // super(shippingStrategy);
-        this.customer = customer;
-        this.shippingFee = 20;
-        this.cart = new HashMap<>();
-        this.location = null;
+    public void setCustomerCart(Map<String, Integer> customerCart) {
+        this.customerCart = customerCart;
     }
-
+    public SimpleOrder() {}
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
@@ -37,29 +35,15 @@ public class SimpleOrder extends Order {
         this.shippingFee = shippingFee;
     }
 
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    // public void setCustomer(Customer customer) {
-    // this.customer = customer;
-    // }
+    public Customer getCustomer() {return customer;}
 
     public double getShippingFee() {
         return shippingFee;
     }
 
-    // public void setShippingFee(double shippingFee) {
-    // this.shippingFee = shippingFee;
-    // }
-
     public Map<Product, Integer> getCart() {
         return cart;
     }
-
-    // public void setCart(List<Product> cart) {
-    // this.cart = cart;
-    // }
 
     public String getLocation() {
         return location;
@@ -68,12 +52,11 @@ public class SimpleOrder extends Order {
     public void addProduct(Product product, Integer count) {
         if (cart == null) {
             this.cart = new HashMap<>();
+            this.customerCart = new HashMap<>();
         }
-
+        customerCart.put(product.getName(), count);
         cart.put(product, count);
-
     }
-
     public void setLocation(String location) {
         this.location = location;
     }

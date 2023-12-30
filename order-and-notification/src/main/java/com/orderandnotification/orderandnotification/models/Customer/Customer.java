@@ -11,7 +11,16 @@ public class Customer {
 	String username;
 	String password;
 	double balance = 0.0;
-	List<Order> orders;// = new ArrayList<>();
+	List<Order> orders;
+	String location;
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
 
 	public double getBalance() {
 		return balance;

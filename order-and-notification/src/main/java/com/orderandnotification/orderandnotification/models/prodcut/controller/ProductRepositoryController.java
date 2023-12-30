@@ -26,34 +26,9 @@ public class ProductRepositoryController {
 	public String postMethodName(@RequestBody Product entity) {
 		return repo.addProduct(entity);
 	}
-
-	// @GetMapping("/get")
-	// public List<Product> getProducts() {
-	// 	List<Product> products = new ArrayList<>();
-	// 	for(Map.Entry<Product, Integer> product : repo.getProducts().entrySet()){
-	// 		products.add(product.getKey());
-	// 	}
-	// 	return products;
-	// }
-
 	@GetMapping("/get")
-	public List<Object> getProducts() {
-		List<Object> products = new ArrayList<>();
-		for(Map.Entry<Product, Integer> product : repo.getProducts().entrySet()){
-			products.add(product.getKey());
-		}
-		products.add(repo.getCategoryItems());
-		return products;
+	public List<Object> getProducts()
+	{
+		return repo.returnProducts();
 	}
-	
-	// @GetMapping("/get/{ser}")
-	// public Product getProduct(@PathVariable("ser") int serial) {
-	// 	return repo.getProduct(serial);
-	// }
-
-	// @GetMapping("/getCategories")
-	// public Map<String, Integer> getCategories() {
-	// 	return repo.getCategoryItems();
-	// }
-
 }

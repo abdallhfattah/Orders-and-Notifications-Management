@@ -1,6 +1,8 @@
 package com.orderandnotification.orderandnotification.models.prodcut.logic;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
@@ -34,13 +36,20 @@ public class ProductRepositorybsl {
 
 		return categories;
 	}
+	public List<Object> returnProducts(){
+		List<Object> products = new ArrayList<>();
+		for(Map.Entry<Product, Integer> product : getProducts().entrySet()){
+			products.add(product.getKey());
+		}
+		products.add(getCategoryItems());
+		return products;
+	}
 
 	public void removeProducts(Map<Product, Integer> prodcutsToRemove) {
 		// updating the repository
 		for (Map.Entry<Product, Integer> product : prodcutsToRemove.entrySet()) {
 			repository.removeProduct(product.getKey(), product.getValue());
 		}
-
 	}
 
 	public String verifyOrders(Map<Product, Integer> customerOrder, Map<String, Integer> products) {
@@ -74,7 +83,7 @@ public class ProductRepositorybsl {
 		for (Map.Entry<String, Integer> product : products.entrySet()) {
 			for (Map.Entry<Product, Integer> entry : getProducts().entrySet()) {
 
-				if (product.getKey() == entry.getKey().getName()) {
+				if (product.getKey().equals(entry.getKey().getName())) {
 					TotalCost += (product.getValue() * entry.getKey().getPrice());
 				}
 

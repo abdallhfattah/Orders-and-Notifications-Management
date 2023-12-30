@@ -20,28 +20,19 @@ public class CustomerController {
         customerbsl = cbsl;
     }
 
-    // private final CustomerRepositorybsl customersRepository;
 
     // CHANGE PASSWORD ->
     @GetMapping("/{customer}/get-orders")
-    public List<Order> getOrders(@PathVariable("customer") String name) {
+    public List<Order> getOrders(@PathVariable("customer") String name)
+    {
         return customerbsl.getOrders(name);
     }
 
-    // public record productsM(Map<String, Integer> productsMap) {
-    //     public productsM() {
-    //         // System.out.println(productsMap);
-    //         // Initialize with an empty map
-    //         this(Map.of());
-    //     }
-    // }
-
     public record ProductsM(Map<String, Integer> productsMap) {
-        
     }
 
     @PostMapping("/{customer}/add-simple-order")
-    public String addSimpleOrder(@RequestBody ProductsM products,  @PathVariable("customer") String name) {
+    public String addSimpleOrder(@RequestBody ProductsM products,@RequestBody String location , @PathVariable("customer") String name) {
         System.out.println(products.productsMap());
         return customerbsl.addSimpleOrder(products.productsMap(), name);
         // return customerbsl.addSimpleOrder(simpleOrder , name);
@@ -53,7 +44,4 @@ public class CustomerController {
     public String addBalance(@PathVariable("customer") String name, @RequestBody BalanceDTO balanceDTO) {
         return customerbsl.addBalance(balanceDTO.balance(), name);
     }
-
-
-
 }
