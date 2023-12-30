@@ -39,21 +39,24 @@ public class Customerbsl {
 			return "there is no such a user";
 		}
 
-		double TotalCost = 0;
+		double totalCost = 0;
 		Map<Product, Integer> customerOrder = new HashMap<>();
-		String No = ProductsRepositorybsl.verifyOrders(customerOrder, products, TotalCost);
+		totalCost = ProductsRepositorybsl.verifyOrders(customerOrder, products);
 
-		if (!No.equals("successfully done")) {
-			return No;
+		if (totalCost == -1) {
+			return "Product Not Found";
+		}
+		else if (totalCost == -2) {
+			return "Product is not available with this amount";
 		}
 
-		if (customer.getBalance() >= TotalCost && customerOrder != null) {
+		if (customer.getBalance() >= totalCost && customerOrder != null) {
 			// removing products
 			ProductsRepositorybsl.removeProducts(customerOrder);
 
 			this.simpleOrder.setCustomer(customer);
 
-			customer.deductBalance(TotalCost);
+			customer.deductBalance(totalCost);
 
 			customer.makeOrder(simpleOrder);
 			return "Order added Successfully";
