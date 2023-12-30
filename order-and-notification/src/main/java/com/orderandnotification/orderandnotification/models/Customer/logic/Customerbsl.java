@@ -40,32 +40,12 @@ public class Customerbsl {
 		}
 
 		double TotalCost = 0;
+		Map<Product, Integer> customerOrder = new HashMap<>();
+		String No = ProductsRepositorybsl.verifyOrders(customerOrder, products, TotalCost);
 
-		Map<Product,Integer> customerOrder = new HashMap<>();
-		for (Map.Entry<String, Integer> product : products.entrySet()) {
-
-			boolean productFound = false;
-
-			for (Map.Entry<Product, Integer> entry : ProductsRepositorybsl.getProducts().entrySet()) {
-
-				if (product.getKey() == entry.getKey().getName()) {
-					productFound = true;
-					
-					// insufficient category number
-					if (entry.getValue() < product.getValue()) {
-						return "We have only " + entry.getValue() + " from this product " + product.getKey();
-					}
-					// add
-					customerOrder.put(entry.getKey() , product.getValue());
-				}
-				
-			}
-
-			if(!productFound){
-				return "This " + product.getKey()  + " was not found , Order is cancelled";
-			}
+		if (!No.equals("successfully done")) {
+			return No;
 		}
-
 
 		if (customer.getBalance() >= TotalCost && customerOrder != null) {
 			// removing products
@@ -74,7 +54,7 @@ public class Customerbsl {
 			this.simpleOrder.setCustomer(customer);
 
 			customer.deductBalance(TotalCost);
-			
+
 			customer.makeOrder(simpleOrder);
 			return "Order added Successfully";
 		} else {

@@ -42,6 +42,33 @@ public class ProductRepositorybsl {
 
 	}
 
+	public String verifyOrders(Map<Product,Integer> customerOrder , Map<String, Integer> products , double totalCost){
+		for (Map.Entry<String, Integer> product : products.entrySet()) {
+
+			boolean productFound = false;
+
+			for (Map.Entry<Product, Integer> entry : getProducts().entrySet()) {
+
+				if (product.getKey() == entry.getKey().getName()) {
+					productFound = true;
+					// insufficient category number
+					if (entry.getValue() < product.getValue()) {
+						return "We have only " + entry.getValue() + " from this product " + product.getKey();
+					}
+					totalCost += (product.getValue() * entry.getKey().getPrice());
+					// add
+					customerOrder.put(entry.getKey() , product.getValue());
+				}
+				
+			}
+
+			if(!productFound){
+				return "This " + product.getKey()  + " was not found , Order is cancelled";
+			}
+		}
+		return "successfully done";
+	}
+
 	public Product getProduct(int serial) {
 		return repository.getProductBySerial(serial);
 	}
