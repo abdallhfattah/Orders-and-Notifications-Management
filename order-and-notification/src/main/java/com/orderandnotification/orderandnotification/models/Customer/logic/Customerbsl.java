@@ -41,10 +41,10 @@ public class Customerbsl {
 
 		double TotalCost = 0;
 		Map<Product, Integer> customerOrder = new HashMap<>();
-		String No = ProductsRepositorybsl.verifyOrders(customerOrder, products, TotalCost);
+		String response = ProductsRepositorybsl.verifyOrders(customerOrder, products, TotalCost);
 
-		if (!No.equals("successfully done")) {
-			return No;
+		if (!response.equals("successfully done")) {
+			return response;
 		}
 
 		if (customer.getBalance() >= TotalCost && customerOrder != null) {
