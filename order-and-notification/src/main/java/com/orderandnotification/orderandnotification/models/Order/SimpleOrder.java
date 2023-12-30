@@ -23,12 +23,12 @@ public class SimpleOrder extends Order {
         this.cart = cart;
     }
 
-    public SimpleOrder(SimpleOrder simpleOrder) {
-        // ObjectMapper objectMapper = new ObjectMapper();
-        // String json = objectMapper.writeValueAsString(simpleOrder);
-        // this = objectMapper.readValue(json, SimpleOrder.class);
-        
-
+    public void copy(SimpleOrder simpleOrder, SimpleOrder toCopy) {
+        simpleOrder.setCustomer(toCopy.getCustomer());
+        simpleOrder.setCustomerCart(toCopy.getCustomerCart());
+        simpleOrder.setLocation(toCopy.getLocation());
+        simpleOrder.setCart(toCopy.getCart());
+        simpleOrder.setShippingFee(toCopy.getShippingFee());
     }
 
     public Map<String, Integer> getCustomerCart() {

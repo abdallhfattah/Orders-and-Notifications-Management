@@ -17,11 +17,10 @@ public class SimpleOrderbsl {
 		simpleOrder = new SimpleOrder();
 		if (simpleOrder == null) {
 			simpleOrder = new SimpleOrder();
-			System.out.println("=======================================================\n");
 		}
 	}
 
-	public String process(SimpleOrder simpleOrder, ProductRepositorybsl ProductsRepositorybsl,
+	public String simpleOrderprocess(SimpleOrder simpleOrder, ProductRepositorybsl ProductsRepositorybsl,
 			Map<Product, Integer> customerOrder,
 			Map<String, Integer> products,
 			Customer customer) {
@@ -37,4 +36,33 @@ public class SimpleOrderbsl {
 		return "order added successfully";
 	}
 
+	public SimpleOrder OrderPlacing(ProductRepositorybsl productRepositorybsl, Customer customer, String location,
+			Map<Product, Integer> customerOrder, SimpleOrder simpleOrder) {
+		// removing products
+		productRepositorybsl.removeProducts(customerOrder);
+
+		// setting a customer for this specific order
+		this.simpleOrder.setCustomer(customer);
+
+		// setting location to the simple order
+		this.simpleOrder.setLocation(location);
+
+		SimpleOrder simpleOrderCopy = new SimpleOrder();
+		simpleOrderCopy.copy(simpleOrderCopy, simpleOrder);
+		return simpleOrderCopy;
+	}
+
+	public String orderShipping(Customer customer, SimpleOrder simpleOrder) {
+
+		if (simpleOrder != null) {
+			customer.applyShippingFee(simpleOrder);
+			// wiping the cart for shipment
+			simpleOrder.wipeCart();
+
+			return "order is being shiped";
+		}
+
+		return "there is not order";
+
+	}
 }

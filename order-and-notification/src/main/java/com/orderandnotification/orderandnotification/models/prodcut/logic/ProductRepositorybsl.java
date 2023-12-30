@@ -83,7 +83,7 @@ public class ProductRepositorybsl {
 
 	public double GetOrderCost(SimpleOrder simpleOrder) {
 		double TotalCost = 0.0;
-
+		
 		for (Map.Entry<Product, Integer> product : simpleOrder.getCart().entrySet()) {
 			TotalCost += (product.getValue() * product.getKey().getPrice());
 		}

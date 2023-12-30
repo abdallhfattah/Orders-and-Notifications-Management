@@ -50,7 +50,8 @@ public class Customerbsl {
 			this.simpleOrder = new SimpleOrder();
 		}
 
-		String erros = simpleOrderbsl.process(simpleOrder, ProductsRepositorybsl, customerOrder, products, customer);
+		String erros = simpleOrderbsl.simpleOrderprocess(simpleOrder, ProductsRepositorybsl, customerOrder, products,
+				customer);
 
 		if (!erros.equals("order added successfully")) {
 			return erros;
@@ -63,34 +64,22 @@ public class Customerbsl {
 
 	public String placeOrder(String location) {
 
-		if (customerOrder != null) {
+		if (customerOrder != null && simpleOrder != null) {
 			double TotalCost = ProductsRepositorybsl.GetOrderCost(simpleOrder);
 
 			if (customer.getBalance() >= TotalCost && customerOrder != null) {
 
-				// removing products
-				ProductsRepositorybsl.removeProducts(customerOrder);
-
-				// setting a customer for this specific order
-				this.simpleOrder.setCustomer(customer);
-
-				// setting location to the simple order
-				this.simpleOrder.setLocation(location);
-
+				SimpleOrder simpleOrderCopy = simpleOrderbsl.OrderPlacing(ProductsRepositorybsl, customer, location,
+						customerOrder, simpleOrder);
 				// deductBalance
 				this.customer.deductBalance(TotalCost);
 
 				// make the order
-				SimpleOrder copy = new SimpleOrder();
-				copy.setCustomer(simpleOrder.getCustomer());
-				copy.setCustomerCart(simpleOrder.getCustomerCart());
-				copy.setLocation(simpleOrder.getLocation());
-				copy.setCart(simpleOrder.getCart());
-				copy.setShippingFee(simpleOrder.getShippingFee());
-				this.customer.makeOrder(copy);
-
+				this.customer.makeOrder(simpleOrderCopy);
+				simpleOrder = null;
 				return "Order added Successfully";
 			} else {
+				simpleOrder = null;
 				return "Insufficient balance";
 			}
 		}
@@ -98,17 +87,8 @@ public class Customerbsl {
 	}
 
 	public String shipOrder() {
-		if (simpleOrder != null) {
 
-			this.customer.applyShippingFee(simpleOrder);
-
-			// wiping the cart for shipment
-			simpleOrder.wipeCart();
-
-			return "order is being shiped";
-		}
-
-		return "there is not order";
+		return simpleOrderbsl.orderShipping(customer, simpleOrder);
 	}
 
 	public String addBalance(double balance, String name) {
