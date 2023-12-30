@@ -1,6 +1,7 @@
 package com.orderandnotification.orderandnotification.models.Order;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
@@ -13,16 +14,20 @@ public class SimpleOrder extends Order {
     @JsonIgnore
     private Customer customer;
     private double shippingFee;
-    private List<Product> cart;
+    private Map<Product, Integer> cart;
     private String location;
 
-//    public SimpleOrder(Customer customer) {
-//        // super(shippingStrategy);
-//        this.customer = customer;
-//        this.shippingFee = 20;
-//        this.cart = new ArrayList<>();
-//        // this.location = location;
-//    }
+    public SimpleOrder() {
+
+    }
+
+    public SimpleOrder(Customer customer) {
+        // super(shippingStrategy);
+        this.customer = customer;
+        this.shippingFee = 20;
+        this.cart = new HashMap<>();
+        this.location = null;
+    }
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
@@ -45,23 +50,28 @@ public class SimpleOrder extends Order {
     }
 
     // public void setShippingFee(double shippingFee) {
-    //     this.shippingFee = shippingFee;
+    // this.shippingFee = shippingFee;
     // }
 
-    public List<Product> getCart() {
+    public Map<Product, Integer> getCart() {
         return cart;
     }
 
-    public void setCart(List<Product> cart) {
-        this.cart = cart;
-    }
+    // public void setCart(List<Product> cart) {
+    // this.cart = cart;
+    // }
 
     public String getLocation() {
         return location;
     }
 
-    public void addProduct(Product prodcut) {
-        cart.add(prodcut);
+    public void addProduct(Product product, Integer count) {
+        if (cart == null) {
+            this.cart = new HashMap<>();
+        }
+
+        cart.put(product, count);
+
     }
 
     public void setLocation(String location) {

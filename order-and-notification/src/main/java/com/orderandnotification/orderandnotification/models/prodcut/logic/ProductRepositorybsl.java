@@ -28,21 +28,22 @@ public class ProductRepositorybsl {
 	public Map<String, Integer> getCategoryItems() {
 		Map<String, Integer> categories = new HashMap<>();
 		for (Map.Entry<Product, Integer> entry : repository.getAvalibeProduct().entrySet()) {
-			categories.put(entry.getKey().getCategory(), categories.getOrDefault(entry.getKey().getCategory(), 0) + entry.getValue());
+			categories.put(entry.getKey().getCategory(),
+					categories.getOrDefault(entry.getKey().getCategory(), 0) + entry.getValue());
 		}
 
 		return categories;
 	}
 
-	public void removeProducts(Map<Product, Integer> prodcutsToRemove){
+	public void removeProducts(Map<Product, Integer> prodcutsToRemove) {
 		// updating the repository
-		for(Map.Entry<Product, Integer> product : prodcutsToRemove.entrySet()){
-			repository.removeProduct(product.getKey() , product.getValue()); 
+		for (Map.Entry<Product, Integer> product : prodcutsToRemove.entrySet()) {
+			repository.removeProduct(product.getKey(), product.getValue());
 		}
 
 	}
 
-	public String verifyOrders(Map<Product,Integer> customerOrder , Map<String, Integer> products , double totalCost){
+	public String verifyOrders(Map<Product, Integer> customerOrder, Map<String, Integer> products) {
 		for (Map.Entry<String, Integer> product : products.entrySet()) {
 
 			boolean productFound = false;
@@ -55,18 +56,31 @@ public class ProductRepositorybsl {
 					if (entry.getValue() < product.getValue()) {
 						return "We have only " + entry.getValue() + " from this product " + product.getKey();
 					}
-					totalCost += (product.getValue() * entry.getKey().getPrice());
+					// totalCost += (product.getValue() * entry.getKey().getPrice());
 					// add
-					customerOrder.put(entry.getKey() , product.getValue());
+					customerOrder.put(entry.getKey(), product.getValue());
 				}
-				
 			}
 
-			if(!productFound){
-				return "This " + product.getKey()  + " was not found , Order is cancelled";
+			if (!productFound) {
+				return "This " + product.getKey() + " was not found , Order is cancelled";
 			}
 		}
 		return "successfully done";
+	}
+
+	public double GetOrderCost(Map<String, Integer> products) {
+		double TotalCost = 0.0;
+		for (Map.Entry<String, Integer> product : products.entrySet()) {
+			for (Map.Entry<Product, Integer> entry : getProducts().entrySet()) {
+
+				if (product.getKey() == entry.getKey().getName()) {
+					TotalCost += (product.getValue() * entry.getKey().getPrice());
+				}
+
+			}
+		}
+		return TotalCost;
 	}
 
 	public Product getProduct(int serial) {

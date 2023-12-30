@@ -39,28 +39,44 @@ public class Customerbsl {
 			return "there is no such a user";
 		}
 
-		double TotalCost = 0;
 		Map<Product, Integer> customerOrder = new HashMap<>();
-		String response = ProductsRepositorybsl.verifyOrders(customerOrder, products, TotalCost);
 
-		if (!response.equals("successfully done")) {
-			return response;
+		String erros = ProductsRepositorybsl.verifyOrders(customerOrder, products);
+
+		if (!erros.equals("successfully done")) {
+			return erros;
 		}
 
-		if (customer.getBalance() >= TotalCost && customerOrder != null) {
-			// removing products
-			ProductsRepositorybsl.removeProducts(customerOrder);
+		this.simpleOrder.setCustomer(customer);
 
-			this.simpleOrder.setCustomer(customer);
-
-			customer.deductBalance(TotalCost);
-
-			customer.makeOrder(simpleOrder);
-			return "Order added Successfully";
-		} else {
-			return "Insufficient balance";
+		for (Map.Entry<Product, Integer> producEntry : customerOrder.entrySet()) {
+			this.simpleOrder.addProduct(producEntry.getKey() , producEntry.getValue());
 		}
+		this.customer.makeOrder(simpleOrder);
+
+		System.out.println(simpleOrder.getCart());
+		return "order on cart";
 	}
+
+	// public String makeOrder(){
+
+	// double TotalCost = ProductsRepositorybsl.GetOrderCost(products);
+
+	// System.out.println("TotalCost " + TotalCost);
+	// if (customer.getBalance() >= TotalCost && customerOrder != null) {
+	// // removing products
+	// ProductsRepositorybsl.removeProducts(customerOrder);
+
+	// // this.simpleOrder.setCustomer(customer);
+	// this.simpleOrder.setCart(null);
+	// customer.deductBalance(TotalCost);
+
+	// customer.makeOrder(simpleOrder);
+	// return "Order added Successfully";
+	// } else {
+	// return "Insufficient balance";
+	// }
+	// }
 
 	public String addBalance(double balance, String name) {
 		this.customer = customersRepository.getCustomer(name);
