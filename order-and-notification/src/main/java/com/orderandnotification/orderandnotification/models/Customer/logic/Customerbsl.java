@@ -115,12 +115,20 @@ public class Customerbsl {
 
 	public String shipOrder() {
 
-		if (customer.getOrders().size() != 0) {
-			SimpleOrder simpleOrderCopy = new SimpleOrder();
-			notificationbsl.shipOrderNotification(customer);
-			simpleOrderCopy.copy(simpleOrderCopy,
-					(SimpleOrder) customer.getOrders().get(customer.getOrders().size() - 1));
-			return simpleOrderbsl.orderShipping(customer, simpleOrderCopy);
+		int orders = customer.getOrders().size();
+		if (orders != 0) {
+			SimpleOrder simpleOrder = (SimpleOrder) customer.getOrders().get(orders - 1);
+			if (!simpleOrder.isShiped()) {
+
+				SimpleOrder simpleOrderCopy = new SimpleOrder();
+
+				notificationbsl.shipOrderNotification(customer);
+				simpleOrder.setShiped(true);
+				simpleOrderCopy.copy(simpleOrderCopy,
+						(SimpleOrder) customer.getOrders().get(customer.getOrders().size() - 1));
+				return simpleOrderbsl.orderShipping(customer, simpleOrderCopy);
+			}
+			return "all orders are shipped";
 		}
 
 		return "there is no order to ship";
@@ -157,7 +165,10 @@ public class Customerbsl {
 	}
 
 	public String cancelOrder() {
-		notificationbsl.deleteOrderNotification(customer);
-		return simpleOrderbsl.CancelOrder(customer, productRepositorybsl.getRepository());
+		if (!customer.getOrders().isEmpty()) {
+			notificationbsl.deleteOrderNotification(customer);
+			return simpleOrderbsl.CancelOrder(customer, productRepositorybsl.getRepository());
+		}
+		return "You have no orders to cancel";
 	}
 }

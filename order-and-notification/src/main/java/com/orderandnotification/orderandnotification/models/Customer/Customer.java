@@ -21,10 +21,6 @@ public class Customer {
 	// uml
 	List<String> notifications;
 
-	public List<String> getMessages() {
-		return notifications;
-	}
-
 	public void addNotification(String notification) {
 		notifications.add(notification);
 	}

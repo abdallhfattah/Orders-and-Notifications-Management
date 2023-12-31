@@ -18,6 +18,16 @@ public class SimpleOrder extends Order {
     private Map<Product, Integer> cart;
     private Map<String, Integer> customerCart;
     private String location;
+    @JsonIgnore
+    private boolean shiped;
+
+    public boolean isShiped() {
+        return shiped;
+    }
+
+    public void setShiped(boolean shiped) {
+        this.shiped = shiped;
+    }
 
     public void setCart(Map<Product, Integer> cart) {
         this.cart = cart;

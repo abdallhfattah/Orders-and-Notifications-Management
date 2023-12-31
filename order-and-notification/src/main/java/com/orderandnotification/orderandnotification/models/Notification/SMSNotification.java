@@ -7,8 +7,7 @@ public class SMSNotification extends Notification {
 
     public String send(Customer customer, SimpleOrder simpleorder, String body) {
 
-        String NotificationBody = "Dear " + customer.getUsername() + " your order: "
-                + simpleorder.getCart()
+        String NotificationBody = "Dear " + customer.getUsername() + " your order "
                 + " is " + body + " . thanks for using our store :)";
 
         customer.addNotification(NotificationBody);

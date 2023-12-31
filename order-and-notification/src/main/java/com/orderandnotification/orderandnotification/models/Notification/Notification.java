@@ -5,7 +5,6 @@ import com.orderandnotification.orderandnotification.models.Order.SimpleOrder;
 
 public abstract class Notification {
 
-    
     public void NotificationTemplate(Customer customer, SimpleOrder simpleorder, String body) {
         send(customer, simpleorder, body);
     }
