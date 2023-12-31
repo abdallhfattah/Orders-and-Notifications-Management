@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import com.orderandnotification.orderandnotification.models.Customer.Customer;
+import com.orderandnotification.orderandnotification.models.Notification.logic.Notificationbsl;
 import com.orderandnotification.orderandnotification.models.Order.Order;
 import com.orderandnotification.orderandnotification.models.Order.SimpleOrder;
 import com.orderandnotification.orderandnotification.models.Order.logic.CompoundOrderbsl;
@@ -18,11 +19,11 @@ import com.orderandnotification.orderandnotification.models.prodcut.logic.Produc
 public class Customerbsl {
 
 	private Customer customer;
+
 	private CustomerRepositorybsl customersRepository;
-
-	private ProductRepositorybsl ProductsRepositorybsl;
+	private ProductRepositorybsl productRepositorybsl;
 	private SimpleOrderbsl simpleOrderbsl;
-
+	private Notificationbsl notificationbsl;
 	private Map<Product, Integer> customerOrder;
 
 	public void setSimpleOrderbsl() {
@@ -44,9 +45,11 @@ public class Customerbsl {
 		this.customerOrder = customerOrder;
 	}
 
-	public Customerbsl(CustomerRepositorybsl cbsl, ProductRepositorybsl ProductsRepositorybsl) {
+	public Customerbsl(Notificationbsl notificationbsl, CustomerRepositorybsl cbsl,
+			ProductRepositorybsl productRepositorybsl) {
 		this.customersRepository = cbsl;
-		this.ProductsRepositorybsl = ProductsRepositorybsl;
+		this.productRepositorybsl = productRepositorybsl;
+		this.notificationbsl = notificationbsl;
 	}
 
 	public List<Order> getOrders(String name) {
@@ -70,7 +73,7 @@ public class Customerbsl {
 			customer.setCurrentOrder(new SimpleOrder());
 		}
 
-		String erros = simpleOrderbsl.simpleOrderprocess(customer.getCurrentOrder(), ProductsRepositorybsl,
+		String erros = simpleOrderbsl.simpleOrderprocess(customer.getCurrentOrder(), productRepositorybsl,
 				customerOrder, products,
 				customer);
 
@@ -86,17 +89,19 @@ public class Customerbsl {
 	public String placeOrder(String location) {
 
 		if (customerOrder != null && customer.getCurrentOrder() != null) {
-			double TotalCost = ProductsRepositorybsl.GetOrderCost(customer.getCurrentOrder());
+			double TotalCost = productRepositorybsl.GetOrderCost(customer.getCurrentOrder());
 
 			if (customer.getBalance() >= TotalCost && customerOrder != null) {
 
-				SimpleOrder simpleOrderCopy = simpleOrderbsl.OrderPlacing(ProductsRepositorybsl, customer, location,
+				SimpleOrder simpleOrderCopy = simpleOrderbsl.OrderPlacing(productRepositorybsl, customer, location,
 						customerOrder, customer.getCurrentOrder());
 
 				// deductBalance
 				this.customer.deductBalance(TotalCost);
 				// make the order
 				this.customer.makeOrder(simpleOrderCopy);
+
+				notificationbsl.placeOrderNotification(customer);
 
 				customer.setCurrentOrder(null);
 				return "Order added Successfully";
@@ -108,12 +113,11 @@ public class Customerbsl {
 		return "add products to your cart";
 	}
 
-
 	public String shipOrder() {
 
-		if (customer.getOrders().size() != 0)
-		{
+		if (customer.getOrders().size() != 0) {
 			SimpleOrder simpleOrderCopy = new SimpleOrder();
+			notificationbsl.shipOrderNotification(customer);
 			simpleOrderCopy.copy(simpleOrderCopy,
 					(SimpleOrder) customer.getOrders().get(customer.getOrders().size() - 1));
 			return simpleOrderbsl.orderShipping(customer, simpleOrderCopy);
@@ -126,7 +130,6 @@ public class Customerbsl {
 		this.customer = customersRepository.getCustomer(name);
 		customer.addBalance(balance);
 		return "Balance added!";
-
 	}
 
 	public void placeCurrentOrder(Customer customer, int customersInCompoundOrder, SimpleOrderbsl simpleOrderbsl) {
@@ -145,7 +148,7 @@ public class Customerbsl {
 	public String placeCompoundOrder(List<String> customerNames, String currentCustomer) {
 
 		CompoundOrderbsl compoundOrderbsl = new CompoundOrderbsl(
-				new Customerbsl(customersRepository, ProductsRepositorybsl));
+				new Customerbsl(notificationbsl, customersRepository, productRepositorybsl));
 
 		customerNames.add(currentCustomer);
 
@@ -153,4 +156,8 @@ public class Customerbsl {
 
 	}
 
+	public String cancelOrder() {
+		notificationbsl.deleteOrderNotification(customer);
+		return simpleOrderbsl.CancelOrder(customer, productRepositorybsl.getRepository());
+	}
 }

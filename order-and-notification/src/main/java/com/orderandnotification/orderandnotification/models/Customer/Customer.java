@@ -18,6 +18,17 @@ public class Customer {
 	String Email;
 	String PhoneNumber;
 
+	// uml
+	List<String> notifications;
+
+	public List<String> getMessages() {
+		return notifications;
+	}
+
+	public void addNotification(String notification) {
+		notifications.add(notification);
+	}
+
 	public String getPhoneNumber() {
 		return PhoneNumber;
 	}
@@ -97,5 +108,13 @@ public class Customer {
 
 	public void applyShippingFee(SimpleOrder order) {
 		balance -= order.getShippingFee();
+	}
+
+	public List<String> getNotifications() {
+		return notifications;
+	}
+
+	public void setNotifications(List<String> notifications) {
+		this.notifications = notifications;
 	}
 }

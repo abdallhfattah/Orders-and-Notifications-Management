@@ -58,6 +58,10 @@ public class ProductsRepository {
 		products.put(product, products.get(product) - count);
 	}
 
+	public void returnProduct(Product product, Integer count) {
+		products.put(product, products.get(product) + count);
+	}
+
 	public Product getProductBySerial(int serial) {
 
 		for (Map.Entry<Product, Integer> product : products.entrySet()) {

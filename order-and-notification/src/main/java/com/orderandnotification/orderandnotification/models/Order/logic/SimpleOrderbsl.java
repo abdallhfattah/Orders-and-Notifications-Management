@@ -2,12 +2,12 @@ package com.orderandnotification.orderandnotification.models.Order.logic;
 
 import java.util.Map;
 
-import com.orderandnotification.orderandnotification.models.prodcut.ProductsRepository;
 import org.springframework.stereotype.Service;
 
 import com.orderandnotification.orderandnotification.models.Customer.Customer;
 import com.orderandnotification.orderandnotification.models.Order.SimpleOrder;
 import com.orderandnotification.orderandnotification.models.prodcut.Product;
+import com.orderandnotification.orderandnotification.models.prodcut.ProductsRepository;
 import com.orderandnotification.orderandnotification.models.prodcut.logic.ProductRepositorybsl;
 
 @Service
@@ -31,7 +31,6 @@ public class SimpleOrderbsl {
 		if (!erros.equals("successfully done")) {
 			return erros;
 		}
-
 		this.simpleOrder.setCustomer(customer);
 
 		simpleOrder.addProducts(customerOrder);
@@ -51,7 +50,6 @@ public class SimpleOrderbsl {
 		simpleOrder.setLocation(location);
 
 		SimpleOrder simpleOrderCopy = new SimpleOrder();
-	
 		simpleOrderCopy.copy(simpleOrderCopy, simpleOrder);
 
 		return simpleOrderCopy;
@@ -67,11 +65,28 @@ public class SimpleOrderbsl {
 		}
 		return "there is not order";
 	}
-	public String CancelOrder(Customer customer , ProductsRepository productsRepository)
-	{
-		this.simpleOrder = customer.get
-//		customer.getCurrentOrder().wipeCart();
-		return "Order Cancelled Successfully";
+
+	public String CancelOrder(Customer customer, ProductsRepository productsRepository) {
+
+		if (!customer.getOrders().isEmpty()) {
+
+			this.simpleOrder = (SimpleOrder) customer.getOrders().get(customer.getOrders().size() - 1);
+			double totalCost = 0.0;
+			for (Map.Entry<Product, Integer> product : simpleOrder.getCart().entrySet()) {
+				totalCost += (product.getKey().getPrice() * product.getValue());
+				// return prodcuts that have been taken
+				productsRepository.returnProduct(product.getKey(), product.getValue());
+			}
+
+			// add balance
+			customer.addBalance(totalCost);
+			customer.getOrders().remove(customer.getOrders().size() - 1);
+			simpleOrder.wipeCart();
+			// customer.getCurrentOrder().wipeCart();
+			return "Order Cancelled Successfully";
+		}
+
+		return "You have no orders to cancel";
 	}
 
 }

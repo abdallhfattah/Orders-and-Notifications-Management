@@ -15,6 +15,10 @@ import com.orderandnotification.orderandnotification.models.prodcut.ProductsRepo
 public class ProductRepositorybsl {
 	private final ProductsRepository repository;
 
+	public ProductsRepository getRepository() {
+		return repository;
+	}
+
 	public ProductRepositorybsl() {
 		repository = new ProductsRepository();
 	}
