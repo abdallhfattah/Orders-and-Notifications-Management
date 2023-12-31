@@ -49,6 +49,7 @@ public class SimpleOrderbsl {
 		this.simpleOrder.setLocation(location);
 
 		SimpleOrder simpleOrderCopy = new SimpleOrder();
+	
 		simpleOrderCopy.copy(simpleOrderCopy, simpleOrder);
 
 		return simpleOrderCopy;
@@ -60,10 +61,8 @@ public class SimpleOrderbsl {
 			customer.applyShippingFee(simpleOrder);
 			// wiping the cart for shipment
 			simpleOrder.wipeCart();
-
 			return "order is being shiped";
 		}
-
 		return "there is not order";
 
 	}

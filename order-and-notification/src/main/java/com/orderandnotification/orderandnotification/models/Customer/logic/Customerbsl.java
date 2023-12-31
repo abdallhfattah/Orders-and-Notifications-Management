@@ -47,12 +47,12 @@ public class Customerbsl {
 
 		simpleOrderbsl = new SimpleOrderbsl(customer);
 
-		if(customer.getCurrentOrder() == null){
+		if (customer.getCurrentOrder() == null) {
 			customer.setCurrentOrder(new SimpleOrder());
 		}
 
-
-		String erros = simpleOrderbsl.simpleOrderprocess(customer.getCurrentOrder(), ProductsRepositorybsl, customerOrder, products,
+		String erros = simpleOrderbsl.simpleOrderprocess(customer.getCurrentOrder(), ProductsRepositorybsl,
+				customerOrder, products,
 				customer);
 
 		if (!erros.equals("order added successfully")) {
@@ -75,7 +75,6 @@ public class Customerbsl {
 						customerOrder, customer.getCurrentOrder());
 				// deductBalance
 				this.customer.deductBalance(TotalCost);
-
 				// make the order
 				this.customer.makeOrder(simpleOrderCopy);
 				customer.setCurrentOrder(null);
@@ -89,8 +88,11 @@ public class Customerbsl {
 	}
 
 	public String shipOrder() {
-
-		return simpleOrderbsl.orderShipping(customer, customer.getCurrentOrder());
+		if (customer.getOrders().size() != 0) {
+			return simpleOrderbsl.orderShipping(customer,
+					(SimpleOrder) customer.getOrders().get(customer.getOrders().size() - 1));
+		}
+		return "there is no order to ship";
 	}
 
 	public String addBalance(double balance, String name) {
@@ -100,28 +102,31 @@ public class Customerbsl {
 
 	}
 
-	public void placeCurrentOrder(Customer customer){
+	public void placeCurrentOrder(Customer customer, int customersInCompoundOrder) {
 
 		this.customerOrder = customer.getCurrentOrder().getCart();
-
+		customer.getCurrentOrder().setLocation(customer.getLocation());
+		customer.getCurrentOrder()
+				.setShippingFee(customer.getCurrentOrder().getShippingFee() / customersInCompoundOrder);
 		placeOrder(customer.getLocation());
 	}
 
 	public String placeCompoundOrder(List<String> customerNames, String currentCustomer) {
 
+		int customersInCompoundOrder = (customerNames.size() + 1);
 		// current customer
 		this.customer = customersRepository.getCustomer(currentCustomer);
-		// customer -> location
-		//   		-> current order
+		String customersParticpated = this.customer.getUsername() + " ";
 
-		placeCurrentOrder(this.customer);
+		placeCurrentOrder(this.customer, customersInCompoundOrder);
 
 		// customers
 		for (String customerName : customerNames) {
 			this.customer = customersRepository.getCustomer(customerName);
-			placeCurrentOrder(customer);
+			customersParticpated += customer.getUsername() + " ";
+			placeCurrentOrder(customer, customersInCompoundOrder);
 		}
 
-		return null;
+		return "order is placed for " + customersParticpated;
 	}
 }
