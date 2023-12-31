@@ -26,6 +26,7 @@ public class SimpleOrderbsl {
 			Customer customer) {
 
 		String erros = ProductsRepositorybsl.verifyOrders(customerOrder, products);
+
 		if (!erros.equals("successfully done")) {
 			return erros;
 		}
@@ -43,10 +44,10 @@ public class SimpleOrderbsl {
 		productRepositorybsl.removeProducts(customerOrder);
 
 		// setting a customer for this specific order
-		this.simpleOrder.setCustomer(customer);
+		simpleOrder.setCustomer(customer);
 
 		// setting location to the simple order
-		this.simpleOrder.setLocation(location);
+		simpleOrder.setLocation(location);
 
 		SimpleOrder simpleOrderCopy = new SimpleOrder();
 	

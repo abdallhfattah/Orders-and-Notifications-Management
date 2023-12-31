@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.orderandnotification.orderandnotification.models.Customer.Customer;
 import com.orderandnotification.orderandnotification.models.Order.Order;
 import com.orderandnotification.orderandnotification.models.Order.SimpleOrder;
+import com.orderandnotification.orderandnotification.models.Order.logic.CompoundOrderbsl;
 import com.orderandnotification.orderandnotification.models.Order.logic.SimpleOrderbsl;
 import com.orderandnotification.orderandnotification.models.prodcut.Product;
 import com.orderandnotification.orderandnotification.models.prodcut.logic.ProductRepositorybsl;
@@ -24,8 +25,26 @@ public class Customerbsl {
 
 	private Map<Product, Integer> customerOrder;
 
-	public Customerbsl(Customer customer, CustomerRepositorybsl cbsl, ProductRepositorybsl ProductsRepositorybsl) {
+	public void setSimpleOrderbsl() {
+	}
+
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
 		this.customer = customer;
+	}
+
+	public Map<Product, Integer> getCustomerOrder() {
+		return customerOrder;
+	}
+
+	public void setCustomerOrder(Map<Product, Integer> customerOrder) {
+		this.customerOrder = customerOrder;
+	}
+
+	public Customerbsl(CustomerRepositorybsl cbsl, ProductRepositorybsl ProductsRepositorybsl) {
 		this.customersRepository = cbsl;
 		this.ProductsRepositorybsl = ProductsRepositorybsl;
 	}
@@ -73,10 +92,12 @@ public class Customerbsl {
 
 				SimpleOrder simpleOrderCopy = simpleOrderbsl.OrderPlacing(ProductsRepositorybsl, customer, location,
 						customerOrder, customer.getCurrentOrder());
+
 				// deductBalance
 				this.customer.deductBalance(TotalCost);
 				// make the order
 				this.customer.makeOrder(simpleOrderCopy);
+
 				customer.setCurrentOrder(null);
 				return "Order added Successfully";
 			} else {
@@ -88,10 +109,15 @@ public class Customerbsl {
 	}
 
 	public String shipOrder() {
+
 		if (customer.getOrders().size() != 0) {
-			return simpleOrderbsl.orderShipping(customer,
+			SimpleOrder simpleOrderCopy = new SimpleOrder();
+
+			simpleOrderCopy.copy(simpleOrderCopy,
 					(SimpleOrder) customer.getOrders().get(customer.getOrders().size() - 1));
+			return simpleOrderbsl.orderShipping(customer, simpleOrderCopy);
 		}
+
 		return "there is no order to ship";
 	}
 
@@ -102,31 +128,28 @@ public class Customerbsl {
 
 	}
 
-	public void placeCurrentOrder(Customer customer, int customersInCompoundOrder) {
+	public void placeCurrentOrder(Customer customer, int customersInCompoundOrder, SimpleOrderbsl simpleOrderbsl) {
 
 		this.customerOrder = customer.getCurrentOrder().getCart();
+
 		customer.getCurrentOrder().setLocation(customer.getLocation());
 		customer.getCurrentOrder()
 				.setShippingFee(customer.getCurrentOrder().getShippingFee() / customersInCompoundOrder);
+
+		this.simpleOrderbsl = simpleOrderbsl;
+
 		placeOrder(customer.getLocation());
 	}
 
 	public String placeCompoundOrder(List<String> customerNames, String currentCustomer) {
 
-		int customersInCompoundOrder = (customerNames.size() + 1);
-		// current customer
-		this.customer = customersRepository.getCustomer(currentCustomer);
-		String customersParticpated = this.customer.getUsername() + " ";
+		CompoundOrderbsl compoundOrderbsl = new CompoundOrderbsl(
+				new Customerbsl(customersRepository, ProductsRepositorybsl));
 
-		placeCurrentOrder(this.customer, customersInCompoundOrder);
+		customerNames.add(currentCustomer);
 
-		// customers
-		for (String customerName : customerNames) {
-			this.customer = customersRepository.getCustomer(customerName);
-			customersParticpated += customer.getUsername() + " ";
-			placeCurrentOrder(customer, customersInCompoundOrder);
-		}
+		return compoundOrderbsl.placeCompoundOrder(customersRepository, customerNames);
 
-		return "order is placed for " + customersParticpated;
 	}
+
 }
