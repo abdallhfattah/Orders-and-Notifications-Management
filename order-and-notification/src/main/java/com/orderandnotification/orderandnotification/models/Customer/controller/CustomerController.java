@@ -63,9 +63,5 @@ public class CustomerController {
     @PostMapping("/ship-order")
     public String shipOrder() {
         return customerbsl.shipOrder();
-
     }
-
-    
-
 }

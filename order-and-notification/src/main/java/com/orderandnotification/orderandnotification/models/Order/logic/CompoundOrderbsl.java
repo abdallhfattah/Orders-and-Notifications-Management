@@ -1,10 +1,7 @@
 package com.orderandnotification.orderandnotification.models.Order.logic;
-
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.stereotype.Service;
-
 import com.orderandnotification.orderandnotification.models.Customer.Customer;
 import com.orderandnotification.orderandnotification.models.Customer.logic.CustomerRepositorybsl;
 import com.orderandnotification.orderandnotification.models.Customer.logic.Customerbsl;

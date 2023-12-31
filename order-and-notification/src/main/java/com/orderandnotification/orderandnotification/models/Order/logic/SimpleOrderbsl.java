@@ -2,6 +2,7 @@ package com.orderandnotification.orderandnotification.models.Order.logic;
 
 import java.util.Map;
 
+import com.orderandnotification.orderandnotification.models.prodcut.ProductsRepository;
 import org.springframework.stereotype.Service;
 
 import com.orderandnotification.orderandnotification.models.Customer.Customer;
@@ -65,6 +66,12 @@ public class SimpleOrderbsl {
 			return "order is being shiped";
 		}
 		return "there is not order";
-
 	}
+	public String CancelOrder(Customer customer , ProductsRepository productsRepository)
+	{
+		this.simpleOrder = customer.get
+//		customer.getCurrentOrder().wipeCart();
+		return "Order Cancelled Successfully";
+	}
+
 }

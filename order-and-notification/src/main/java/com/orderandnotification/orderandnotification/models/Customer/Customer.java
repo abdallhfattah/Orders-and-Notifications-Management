@@ -15,6 +15,24 @@ public class Customer {
 	List<Order> orders;
 	String location;
 	SimpleOrder currentOrder;
+	String Email;
+	String PhoneNumber;
+
+	public String getPhoneNumber() {
+		return PhoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		PhoneNumber = phoneNumber;
+	}
+
+	public String getEmail() {
+		return Email;
+	}
+
+	public void setEmail(String email) {
+		Email = email;
+	}
 
 	public SimpleOrder getCurrentOrder() {
 		return currentOrder;

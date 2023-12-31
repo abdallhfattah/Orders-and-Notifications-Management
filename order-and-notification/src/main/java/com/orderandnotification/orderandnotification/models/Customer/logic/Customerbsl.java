@@ -108,11 +108,12 @@ public class Customerbsl {
 		return "add products to your cart";
 	}
 
+
 	public String shipOrder() {
 
-		if (customer.getOrders().size() != 0) {
+		if (customer.getOrders().size() != 0)
+		{
 			SimpleOrder simpleOrderCopy = new SimpleOrder();
-
 			simpleOrderCopy.copy(simpleOrderCopy,
 					(SimpleOrder) customer.getOrders().get(customer.getOrders().size() - 1));
 			return simpleOrderbsl.orderShipping(customer, simpleOrderCopy);
