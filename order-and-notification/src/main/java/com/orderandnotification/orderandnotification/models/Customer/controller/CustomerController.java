@@ -28,16 +28,22 @@ public class CustomerController {
         return customerbsl.getOrders(name);
     }
 
+    // compoundOrder -> (String customer -> simpleorder) 
     public record ProductsM(Map<String, Integer> productsMap) {
     }
 
+    
     @PostMapping("/add-simple-order")
     public String addSimpleOrder(@RequestBody ProductsM products, @PathVariable("customer") String name) {
         // ,@RequestBody String location
-        System.out.println(products.productsMap());
+        // System.out.println(products.productsMap());
         return customerbsl.addSimpleOrder(products.productsMap(), name);
     }
-
+    @PostMapping("/add-compound-order")
+    public String addCompoundOrder(@RequestBody List<String> customers, @PathVariable("customer") String name) {
+        // use has to pick location
+        return customerbsl.placeCompoundOrder(customers, name);
+    }
     public record BalanceDTO(Double balance) {
     }
 

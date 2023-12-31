@@ -38,6 +38,7 @@ public class SimpleOrderbsl {
 
 	public SimpleOrder OrderPlacing(ProductRepositorybsl productRepositorybsl, Customer customer, String location,
 			Map<Product, Integer> customerOrder, SimpleOrder simpleOrder) {
+
 		// removing products
 		productRepositorybsl.removeProducts(customerOrder);
 
@@ -49,6 +50,7 @@ public class SimpleOrderbsl {
 
 		SimpleOrder simpleOrderCopy = new SimpleOrder();
 		simpleOrderCopy.copy(simpleOrderCopy, simpleOrder);
+
 		return simpleOrderCopy;
 	}
 

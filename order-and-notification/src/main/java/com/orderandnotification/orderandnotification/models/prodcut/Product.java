@@ -1,7 +1,9 @@
 package com.orderandnotification.orderandnotification.models.prodcut;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Product {
-//	@JsonIgnore
+	@JsonIgnore
 	private int serialNumber;
 //	@JsonProperty("name")
 	private String name;

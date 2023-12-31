@@ -12,15 +12,15 @@ public class Customer {
 	String username;
 	String password;
 	double balance = 0.0;
-	List<Order> orders;	
+	List<Order> orders;
 	String location;
-	Order currentOrder;
+	SimpleOrder currentOrder;
 
-	public Order getCurrentOrder() {
+	public SimpleOrder getCurrentOrder() {
 		return currentOrder;
 	}
 
-	public void setCurrentOrder(Order currentOrder) {
+	public void setCurrentOrder(SimpleOrder currentOrder) {
 		this.currentOrder = currentOrder;
 	}
 
@@ -77,7 +77,7 @@ public class Customer {
 		currentOrder = null;
 	}
 
-	public void applyShippingFee(SimpleOrder order){
+	public void applyShippingFee(SimpleOrder order) {
 		balance -= order.getShippingFee();
 	}
 }

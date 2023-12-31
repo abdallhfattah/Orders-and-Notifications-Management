@@ -18,9 +18,10 @@ public class Customerbsl {
 
 	private Customer customer;
 	private CustomerRepositorybsl customersRepository;
-	private SimpleOrder simpleOrder;
+
 	private ProductRepositorybsl ProductsRepositorybsl;
 	private SimpleOrderbsl simpleOrderbsl;
+
 	private Map<Product, Integer> customerOrder;
 
 	public Customerbsl(Customer customer, CustomerRepositorybsl cbsl, ProductRepositorybsl ProductsRepositorybsl) {
@@ -46,40 +47,41 @@ public class Customerbsl {
 
 		simpleOrderbsl = new SimpleOrderbsl(customer);
 
-		if (simpleOrder == null) {
-			this.simpleOrder = new SimpleOrder();
+		if(customer.getCurrentOrder() == null){
+			customer.setCurrentOrder(new SimpleOrder());
 		}
 
-		String erros = simpleOrderbsl.simpleOrderprocess(simpleOrder, ProductsRepositorybsl, customerOrder, products,
+
+		String erros = simpleOrderbsl.simpleOrderprocess(customer.getCurrentOrder(), ProductsRepositorybsl, customerOrder, products,
 				customer);
 
 		if (!erros.equals("order added successfully")) {
 			return erros;
 		}
 
-		this.customer.setCurrentOrder(simpleOrder);
+		this.customer.setCurrentOrder(customer.getCurrentOrder());
 
 		return "order on cart";
 	}
 
 	public String placeOrder(String location) {
 
-		if (customerOrder != null && simpleOrder != null) {
-			double TotalCost = ProductsRepositorybsl.GetOrderCost(simpleOrder);
+		if (customerOrder != null && customer.getCurrentOrder() != null) {
+			double TotalCost = ProductsRepositorybsl.GetOrderCost(customer.getCurrentOrder());
 
 			if (customer.getBalance() >= TotalCost && customerOrder != null) {
 
 				SimpleOrder simpleOrderCopy = simpleOrderbsl.OrderPlacing(ProductsRepositorybsl, customer, location,
-						customerOrder, simpleOrder);
+						customerOrder, customer.getCurrentOrder());
 				// deductBalance
 				this.customer.deductBalance(TotalCost);
 
 				// make the order
 				this.customer.makeOrder(simpleOrderCopy);
-				simpleOrder = null;
+				customer.setCurrentOrder(null);
 				return "Order added Successfully";
 			} else {
-				simpleOrder = null;
+				customer.setCurrentOrder(null);
 				return "Insufficient balance";
 			}
 		}
@@ -88,23 +90,38 @@ public class Customerbsl {
 
 	public String shipOrder() {
 
-		return simpleOrderbsl.orderShipping(customer, simpleOrder);
+		return simpleOrderbsl.orderShipping(customer, customer.getCurrentOrder());
 	}
 
 	public String addBalance(double balance, String name) {
-
 		this.customer = customersRepository.getCustomer(name);
 		customer.addBalance(balance);
 		return "Balance added!";
 
 	}
 
-	public String deductBalance(double balance, String name) {
-		this.customer = customersRepository.getCustomer(name);
-		if (balance > customer.getBalance()) {
-			return "Insufficient Balance";
+	public void placeCurrentOrder(Customer customer){
+
+		this.customerOrder = customer.getCurrentOrder().getCart();
+
+		placeOrder(customer.getLocation());
+	}
+
+	public String placeCompoundOrder(List<String> customerNames, String currentCustomer) {
+
+		// current customer
+		this.customer = customersRepository.getCustomer(currentCustomer);
+		// customer -> location
+		//   		-> current order
+
+		placeCurrentOrder(this.customer);
+
+		// customers
+		for (String customerName : customerNames) {
+			this.customer = customersRepository.getCustomer(customerName);
+			placeCurrentOrder(customer);
 		}
-		customer.addBalance(balance);
-		return "Amount Deducted and Order is placed!";
+
+		return null;
 	}
 }
